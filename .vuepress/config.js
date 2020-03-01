@@ -58,18 +58,18 @@ module.exports = {
               {
                 text: "要多杂有多杂",
                 items: [
-                  {text: "常用配置", link: "/notes/setting.html"},
-                  {text: "Shell", link: "/notes/shell.html"},
-                  {text: "其它", link: "/notes/other.html"}
+                  { text: "常用配置", link: "/notes/setting.html" },
+                  { text: "Shell", link: "/notes/shell.html" },
+                  { text: "其它", link: "/notes/other.html" }
                 ]
               },
               {
                 text: "我的破烂~",
-                items: [{text: "好东西啊", link: "/notes/xianyu.html"}]
+                items: [{ text: "好东西啊", link: "/notes/xianyu.html" }]
               }
             ]
           },
-          {text: "GitHub", link: "https://github.com/boot-vue"}
+          { text: "GitHub", link: "https://github.com/boot-vue" }
         ]
       }
     }
@@ -82,7 +82,7 @@ function javaSider(title) {
     {
       title,
       collapsable: false,
-      children: ["", "security"]
+      children: ["", "cloud", "security"]
     }
   ];
 }

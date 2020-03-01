@@ -247,15 +247,15 @@ awk -F: '/^root/{print $7}' passwd
 
 ## expect
 
-shell自动交互输入
+shell 自动交互输入
 
-| Command  | 作用|
-|---|---|
-|  spawn |启动新的进程|
-|  send |用于向进程发送字符串|
-|  expect |从进程接收字符串|
-|  interact |允许用户交互|
-|  exp_continue |匹配多个字符串在执行动作后加此命令|
+| Command      | 作用                               |
+| ------------ | ---------------------------------- |
+| spawn        | 启动新的进程                       |
+| send         | 用于向进程发送字符串               |
+| expect       | 从进程接收字符串                   |
+| interact     | 允许用户交互                       |
+| exp_continue | 匹配多个字符串在执行动作后加此命令 |
 
 ```bash
 #!/bin/bash
