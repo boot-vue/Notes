@@ -1,5 +1,5 @@
 module.exports = {
-  base: "/",
+  base: "/Notes/",
   title: "啪啪啪的指针",
   dest: "docs",
   plugins: [
