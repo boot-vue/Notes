@@ -2,7 +2,7 @@
 
 ## Nacos
 
-服务注册/发现  配置中心
+服务注册/发现 配置中心
 
 NameSpace-->Group-->Service-->Cluster--->Instance
 
@@ -41,10 +41,35 @@ xxxx:
       clients: xxx服务
    ```
 
-2. 重写ribbon负载均衡规则
+2. 重写 ribbon 负载均衡规则
 
    ```java
     extends AbstarctRibbonLoadBlancer
 
     nacosDiscoveryProperties-->namingService--->selectOneHealthy... // nacos提供的基于权重的负载均衡规则
    ```
+
+## Feign
+
+> 声明式 HTTP 客户端
+
+```java
+@FelgnClient(name="xxx服务")
+interface xxx{
+
+   @GetMapping("/test)
+   Object test(....);
+}
+```
+
+1. Feign 默认 httpclient 没提供连接池
+2. 日志: none basic headers all <code>@EnableFeignClients(defaultConfigurations=xxxx)可以指定全局配置</code>
+
+```java
+feign:
+  client:
+    xxx服务: // default 为全局配置
+      loggerLevel: xxx
+```
+
+3. 支持的配置: 拦截器 重试策略 超时....
