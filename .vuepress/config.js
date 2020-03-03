@@ -26,7 +26,6 @@ module.exports = {
         lastUpdated: "上次更新",
         sidebar: {
           "/java/": javaSider("New一个对象"),
-          "/go/": goSider("啪啪啪的指针"),
           "/open/": openSider(),
           "/sharp/": sharpSider(),
           "/web/": webSider(),
