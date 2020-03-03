@@ -42,10 +42,6 @@ module.exports = {
             link: "/java/"
           },
           {
-            text: "Go",
-            link: "/go/"
-          },
-          {
             text: "好工具",
             link: "/open/"
           },
@@ -88,16 +84,6 @@ function javaSider(title) {
       title,
       collapsable: false,
       children: ["", "cloud", "security"]
-    }
-  ];
-}
-
-function goSider(title) {
-  return [
-    {
-      title,
-      collapsable: false,
-      children: [""]
     }
   ];
 }
