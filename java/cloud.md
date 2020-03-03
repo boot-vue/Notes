@@ -73,3 +73,14 @@ feign:
 ```
 
 3. 支持的配置: 拦截器 重试策略 超时....
+4. 不同服务的 feignClient 继承公共接口/dto 对象?
+5. 使用 apache httpclient: 额外的依赖+配置 <code>feign.htpclient.enable:true</code>
+
+## Sentinel
+
+GitHub[Sentinel](https://github.com/alibaba/Sentinel)
+
+![流控规则](./imgs/sentinel.png)
+
+1. 关联: 关联的资源达到阈值就限流对自己资源的请求
+2. 资源: <code>@SentinelResource("xxxx")</code> 或者请求 uri 也可以当作资源

@@ -354,7 +354,6 @@ public class SmsCodeAuthenticationSecurityConfig extends SecurityConfigurerAdapt
 ![授权](./imgs/role.png)
 
 
-
 ## Shiro
 
 ```java
