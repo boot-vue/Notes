@@ -115,5 +115,5 @@ function openSider() {
 }
 
 function sharpSider() {
-  return ["", "netty", "elk"];
+  return ["", "netty", "elk", "rocket"];
 }
