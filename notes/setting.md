@@ -276,7 +276,7 @@ openssl smime -verify -in signed.mobileconfig -inform der -certfile chain.crt -C
 
 ```
 
-## p12格式
+## p12 格式
 
 ```
 openssl genrsa -out ios.key 2048
@@ -468,6 +468,13 @@ static function OnWebSocketMessage(oMsg: WebSocketMessage) {
         FiddlerApplication.Log.LogString(oMsg.ToString());
 }
 ```
+
+## 远程调试
+
+1. Tomcat <code>startup.sh</code> 开头
+   > declare -x CATALINA_OPTS="-server -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=3316"
+2. Jar
+   > java -jar -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=3316 xxx.jar
 
 ## JDK 环境变量
 
