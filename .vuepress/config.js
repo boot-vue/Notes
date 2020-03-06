@@ -11,6 +11,10 @@ module.exports = {
           moment.locale("zh-CN");
           return moment(timestamp).fromNow();
         }
+      },
+      "@vuepress/google-analytics",
+      {
+        ga: "UA-123765031-2"
       }
     ]
   ],
@@ -100,5 +104,5 @@ function openSider() {
 }
 
 function sharpSider() {
-  return ["", "netty", "elk", "rocket"];
+  return ["", "netty", "elk", "rocket", "zookeeper", "kafka"];
 }
