@@ -1,3 +1,5 @@
+const secret = require("./secret");
+
 module.exports = {
   base: "/Notes/",
   title: "啪啪啪的指针",
@@ -16,9 +18,10 @@ module.exports = {
     [
       "@vuepress/google-analytics",
       {
-        ga: "UA-123765031-2"
+        ga: secret.ga
       }
-    ]
+    ],
+    ["@vuepress/nprogress"]
   ],
   themeConfig: {
     serviceWorker: {
