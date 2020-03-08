@@ -353,7 +353,6 @@ public class SmsCodeAuthenticationSecurityConfig extends SecurityConfigurerAdapt
 
 ![授权](./imgs/role.png)
 
-
 ## Shiro
 
 ```java
@@ -362,7 +361,7 @@ public class ShiroConfig {
 
     @Bean("hashedCredentialsMatcher")
     public HashedCredentialsMatcher hashedCredentialsMatcher() {
-        HashedCredentialsMatcher credentialsMatcher = 
+        HashedCredentialsMatcher credentialsMatcher =
             new HashedCredentialsMatcher();
         //指定加密方式为MD5
         credentialsMatcher.setHashAlgorithmName("MD5");
@@ -373,9 +372,9 @@ public class ShiroConfig {
     }
 
     @Bean("userRealm")
-    public UserRealm userRealm(@Qualifier("hashedCredentialsMatcher") 
+    public UserRealm userRealm(@Qualifier("hashedCredentialsMatcher")
                                HashedCredentialsMatcher matcher) {
-        
+
         UserRealm userRealm = new UserRealm();
         userRealm.setCredentialsMatcher(matcher);
         return userRealm;
@@ -384,7 +383,7 @@ public class ShiroConfig {
     @Bean
     public ShiroFilterFactoryBean shirFilter(@Qualifier("securityManager")
                                DefaultWebSecurityManager securityManager) {
-        
+
         ShiroFilterFactoryBean bean = new ShiroFilterFactoryBean();
         // 设置 SecurityManager
         bean.setSecurityManager(securityManager);
@@ -394,7 +393,7 @@ public class ShiroConfig {
         bean.setLoginUrl("/toLogin");
         // 设置未授权提示Url
         bean.setUnauthorizedUrl("/error/unAuth");
-        
+
         /**
          * anon：匿名用户可访问
          * authc：认证用户可访问
@@ -422,8 +421,8 @@ public class ShiroConfig {
     @Bean(name="securityManager")
     public DefaultWebSecurityManager getDefaultWebSecurityManager(
         HashedCredentialsMatcher hashedCredentialsMatcher) {
-        
-        DefaultWebSecurityManager securityManager = 
+
+        DefaultWebSecurityManager securityManager =
             new DefaultWebSecurityManager();
         // 关联realm.
         securityManager.setRealm(userRealm(hashedCredentialsMatcher));
@@ -433,6 +432,7 @@ public class ShiroConfig {
 ```
 
 Realm:
+
 ```java
 public class UserRealm extends AuthorizingRealm {
 
@@ -445,7 +445,7 @@ public class UserRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(
         PrincipalCollection principalCollection) {
-        
+
         System.out.println("===执行授权===");
 
         Subject subject = SecurityUtils.getSubject();
@@ -503,9 +503,102 @@ public class UserRealm extends AuthorizingRealm {
         String hashAlgorithName = "MD5";
         int hashIterations = 1024;
         ByteSource credentialsSalt = ByteSource.Util.bytes(username);
-        Object obj = new SimpleHash(hashAlgorithName, password, 
+        Object obj = new SimpleHash(hashAlgorithName, password,
                                     credentialsSalt, hashIterations);
         System.out.println(obj);
+    }
+}
+```
+
+## Google Authenticator
+
+```java
+public class GoogleAuthenticator {
+
+    // 密钥长度
+    public static final int SECRET_SIZE = 10;
+	// 计时器种子
+    public static final String SEED = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
+    // 随机数算法
+    public static final String RANDOM_NUMBER_ALGORITHM = "SHA1PRNG";
+    // 时间窗口
+    int window_size = 3; // 3--17
+
+    public void setWindowSize(int s) {
+        if (s >= 3 && s <= 17)
+            window_size = s;
+    }
+
+
+	// 生成密钥
+    public static String generateSecretKey() {
+        SecureRandom sr = null;
+        try {
+            sr = SecureRandom.getInstance(RANDOM_NUMBER_ALGORITHM);
+            sr.setSeed(Base64.decodeBase64(SEED));
+            byte[] buffer = sr.generateSeed(SECRET_SIZE);
+            Base32 codec = new Base32();
+            byte[] bEncodedKey = codec.encode(buffer);
+            String encodedKey = new String(bEncodedKey);
+            return encodedKey;
+        } catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+        }
+        return null;
+    }
+
+    // 生成二维码url
+    public static String getQRBarcodeURL(String user, String host, String secret) {
+        String format = "http://www.google.com/chart?chs=200x200&chld=M%%7C0&cht=qr&chl=otpauth://totp/%s@%s?secret=%s";
+        return String.format(format, user, host, secret);
+    }
+
+    // 二维码内容
+    public static String getQRBarcode(String user, String secret) {
+        String format = "otpauth://totp/%s?secret=%s";
+        return String.format(format, user, secret);
+    }
+
+    // 验证 code
+    public boolean check_code(String secret, long code, long timeMsec) {
+        Base32 codec = new Base32();
+        byte[] decodedKey = codec.decode(secret);
+        long t = (timeMsec / 1000L) / 30L;
+        for (int i = -window_size; i <= window_size; ++i) {
+            long hash;
+            try {
+                hash = verify_code(decodedKey, t + i);
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new RuntimeException(e.getMessage());
+            }
+            if (hash == code) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+	// 验证code的具体算法
+    private static int verify_code(byte[] key, long t) throws NoSuchAlgorithmException, InvalidKeyException {
+        byte[] data = new byte[8];
+        long value = t;
+        for (int i = 8; i-- > 0; value >>>= 8) {
+            data[i] = (byte) value;
+        }
+        SecretKeySpec signKey = new SecretKeySpec(key, "HmacSHA1");
+        Mac mac = Mac.getInstance("HmacSHA1");
+        mac.init(signKey);
+        byte[] hash = mac.doFinal(data);
+        int offset = hash[20 - 1] & 0xF;
+        long truncatedHash = 0;
+        for (int i = 0; i < 4; ++i) {
+            truncatedHash <<= 8;
+            truncatedHash |= (hash[offset + i] & 0xFF);
+        }
+        truncatedHash &= 0x7FFFFFFF;
+        truncatedHash %= 1000000;
+        return (int) truncatedHash;
     }
 }
 ```
