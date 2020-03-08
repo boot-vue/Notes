@@ -101,7 +101,7 @@ function notesSider() {
 }
 
 function webSider() {
-  return ["", "vue", "socketio"];
+  return ["", "vue", "socketio", "flutter"];
 }
 
 function openSider() {
