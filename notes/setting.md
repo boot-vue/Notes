@@ -476,6 +476,14 @@ static function OnWebSocketMessage(oMsg: WebSocketMessage) {
 2. Jar
    > java -jar -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=3316 xxx.jar
 
+## Firewalld
+
+```bash
+firewall-cmd --zone=public --add-port=80-9000/tcp --permanent
+
+firewall-cmd --zone=public --remove-port=80/tcp --permanent
+```
+
 ## JDK 环境变量
 
 Windows:
