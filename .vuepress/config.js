@@ -35,7 +35,6 @@ module.exports = {
         lastUpdated: "上次更新",
         sidebar: {
           "/java/": javaSider("New一个对象"),
-          "/go/": goSider("土拨鼠"),
           "/open/": openSider(),
           "/sharp/": sharpSider(),
           "/web/": webSider(),
@@ -49,10 +48,6 @@ module.exports = {
           {
             text: "Java",
             link: "/java/"
-          },
-          {
-            text: "Go",
-            link: "/go/"
           },
           {
             text: "好工具",
@@ -97,16 +92,6 @@ function javaSider(title) {
       title,
       collapsable: false,
       children: ["", "cloud", "security"]
-    }
-  ];
-}
-
-function goSider(title) {
-  return [
-    {
-      title,
-      collapsable: false,
-      children: [""]
     }
   ];
 }

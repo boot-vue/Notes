@@ -482,6 +482,9 @@ static function OnWebSocketMessage(oMsg: WebSocketMessage) {
 firewall-cmd --zone=public --add-port=80-9000/tcp --permanent
 
 firewall-cmd --zone=public --remove-port=80/tcp --permanent
+
+firewall-cmd --permanent --add-rich-rule="rule family="ipv4" source address="1.1.1.1" port protocol="tcp" port="8080" accept"
+firewall-cmd --permanent --remove-rich-rule="rule family="ipv4" source address="1.1.1.1" port protocol="tcp" port="8080" accept"
 ```
 
 ## JDK 环境变量
