@@ -126,3 +126,7 @@ switchType="1" slaveThreshold="100">
 `rule.xml`
 
 分片规则
+
+## Percona
+
+### XtraBackup

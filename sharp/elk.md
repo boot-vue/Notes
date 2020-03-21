@@ -116,3 +116,11 @@ DELETE /{index}/_doc/{id}
 ## mapping
 
 > 字段对应的类型
+
+## Filebeat
+
+> input-->filter--->output
+
+## Logstash
+
+> input-->filter--->output

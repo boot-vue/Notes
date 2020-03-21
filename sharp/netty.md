@@ -7,3 +7,77 @@
 <code>HttpServerCodec</code>
 <code>ChunkedWriteHandler</code>
 <code>WebSocketServerProtocalHandler</code>
+<code>ProtobufVarint32FrameDecoder</code>
+<code>ProtobufDecoder</code>
+<code>ProtobufVarint32LengthFieldPrepender</code>
+<code>protobufEncoder</code>
+
+> ByteToMessageDecoder MessageToByteEncoder MessageToMessageDecoder MessageToMessageEncoder
+> ReplayingDecoder FiexedLengthFrameDecoder DelimiterBasedFramedDecoder LengthFieldBasedFrameDecoder
+
+## Protocal Buffers
+
+```proto
+syntax="proto2";
+package  xxx;
+option java_package="xxxx";
+option java_outer_classname="xxxx";
+option optimize_for = SPEED;// CODE_SIZE LITE_TUNTIME
+
+message Person{
+    required String name=1;
+    required int32 age=2;
+    optional String address=3;
+    repeated phones=4;
+
+    enum xx_type {
+        IPHONE=0;
+        HUAWEI=1;
+    }
+
+    oneof data_bofy { // oneof 同时只有一个字段生效
+        XX xx =5;
+        YY yy=6;
+    }
+
+    message xx{
+        ....
+    }
+}
+```
+
+> protobuf-java protobuf-lite protobuf-util
+
+```bash
+protoc --java_out=src/main/java src/xxxxx.ptoto
+```
+
+## Grpc
+
+> proto3 request/stream request <----> response/stream response
+
+```proto
+option java_multiple_files=true;
+
+service xx {
+    rpc Test(Request xx) returns (Response) {}
+}
+
+message Request{
+    ...
+}
+
+message Response{
+    ...
+}
+```
+
+java:
+
+```
+extends XxxServiceGrpc.XxxServiceImplBase{
+// 重写 ptoto中定义的rpc方法
+}
+
+StreamObserver
+```
