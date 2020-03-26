@@ -112,7 +112,7 @@ function goSider(title) {
 }
 
 function notesSider() {
-  return ["setting", "shell", "other", "xianyu"];
+  return ["setting", "shell", "pass", "other", "xianyu"];
 }
 
 function webSider() {
