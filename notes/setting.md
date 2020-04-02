@@ -65,6 +65,10 @@ if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
 }
 ```
 
+## sudo
+
+> 免输密码 /etc/sudoers.d/sudoers battery ALL=(ALL) NOPASSWD : ALL
+
 ## 自签名证书
 
 > [原文](https://www.cnblogs.com/hnxxcxg/p/7610582.html)

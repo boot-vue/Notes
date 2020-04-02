@@ -33,7 +33,7 @@ for n:= range cc{
 }
 ```
 
-### grpc
+## grpc
 
 > protoc -I proto/ protp/helloworld.proto --go_out=plugins=grpc:proto
 
