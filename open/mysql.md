@@ -130,3 +130,26 @@ switchType="1" slaveThreshold="100">
 ## Percona
 
 ### XtraBackup
+
+## ShardingSphere
+
+## 字符集
+
+```bash
+[mysqld]
+pid-file	= /var/run/mysqld/mysqld.pid
+socket		= /var/run/mysqld/mysqld.sock
+datadir		= /var/lib/mysql
+#log-error	= /var/log/mysql/error.log
+# By default we only accept connections from localhost
+#bind-address	= 127.0.0.1
+# Disabling symbolic-links is recommended to prevent assorted security risks
+symbolic-links=0
+character-set-server=utf8mb4
+max_connections=1000
+
+[client]
+default-character-set=utf8mb4
+default-collation=utf8mb4_general_ci
+
+```
