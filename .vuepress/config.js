@@ -8,24 +8,24 @@ module.exports = {
     [
       "@vuepress/last-updated",
       {
-        transformer: timestamp => {
+        transformer: (timestamp) => {
           const moment = require("moment");
           moment.locale("zh-CN");
           return moment(timestamp).fromNow();
-        }
-      }
+        },
+      },
     ],
     [
       "@vuepress/google-analytics",
       {
-        ga: secret.ga
-      }
+        ga: secret.ga,
+      },
     ],
-    ["@vuepress/nprogress"]
+    ["@vuepress/nprogress"],
   ],
   themeConfig: {
     serviceWorker: {
-      updatePopup: true
+      updatePopup: true,
     },
     locales: {
       "/": {
@@ -39,32 +39,32 @@ module.exports = {
           "/open/": openSider(),
           "/sharp/": sharpSider(),
           "/web/": webSider(),
-          "/notes/": notesSider()
+          "/notes/": notesSider(),
         },
         nav: [
           {
             text: "首页",
-            link: "/"
+            link: "/",
           },
           {
             text: "Java",
-            link: "/java/"
+            link: "/java/",
           },
           {
             text: "Go",
-            link: "/go/"
+            link: "/go/",
           },
           {
             text: "好工具",
-            link: "/open/"
+            link: "/open/",
           },
           {
             text: "利器",
-            link: "/sharp/"
+            link: "/sharp/",
           },
           {
             text: "前端 | APP",
-            link: "/web/"
+            link: "/web/",
           },
           {
             text: "杂七杂八",
@@ -74,20 +74,21 @@ module.exports = {
                 items: [
                   { text: "常用配置", link: "/notes/setting.html" },
                   { text: "Shell", link: "/notes/shell.html" },
-                  { text: "其它", link: "/notes/other.html" }
-                ]
+                  { text: "Linux", link: "/notes/linux.html" },
+                  { text: "其它", link: "/notes/other.html" },
+                ],
               },
               {
                 text: "我的破烂~",
-                items: [{ text: "好东西啊", link: "/notes/xianyu.html" }]
-              }
-            ]
+                items: [{ text: "好东西啊", link: "/notes/xianyu.html" }],
+              },
+            ],
           },
-          { text: "GitHub", link: "https://github.com/boot-vue" }
-        ]
-      }
-    }
-  }
+          { text: "GitHub", link: "https://github.com/boot-vue" },
+        ],
+      },
+    },
+  },
 };
 
 //侧边栏
@@ -96,8 +97,8 @@ function javaSider(title) {
     {
       title,
       collapsable: false,
-      children: ["", "kotlin", "gradle", "cloud", "security"]
-    }
+      children: ["", "kotlin", "gradle", "cloud", "security"],
+    },
   ];
 }
 
@@ -106,13 +107,13 @@ function goSider(title) {
     {
       title,
       collapsable: false,
-      children: [""]
-    }
+      children: [""],
+    },
   ];
 }
 
 function notesSider() {
-  return ["setting", "shell", "pass", "other", "xianyu"];
+  return ["setting", "shell", "linux", "pass", "other", "xianyu"];
 }
 
 function webSider() {

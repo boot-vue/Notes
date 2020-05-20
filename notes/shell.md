@@ -280,10 +280,3 @@ EOF
 
 echo "success"
 ```
-
-## rsync 同步
-
-```bash
-# 远程 ----> 本地  root@xxx:/xxx  /home.....
-rsync -arPu --exclude 'demo1/' --exclude 'demo2/' --exclude 'demo3/' root@202.60.245.163:/root/test /root
-```
