@@ -23,6 +23,8 @@ mixed: 自动选择
 
 > 创建一个用户, 赋予 replaction slave 权限
 
+> CHANGE MASTER TO MASTER_DELAY = 1800；单位为秒   延迟从库同步时间
+
 > show master status;
 
 从节点:
@@ -42,7 +44,6 @@ master-user=xxx
 master-password=cccc
 master-port=3306
 
-
 replicate-do-db=xxx  可以不指定
 replicate-do-db=xxx
 
@@ -54,6 +55,8 @@ replicate-ignore-db=xxx
 > reset master;
 
 > show slave status;
+
+> stop slave sql_thread; start slave sql_thread;
 
 ## PXC 同步
 

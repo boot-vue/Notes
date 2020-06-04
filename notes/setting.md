@@ -477,6 +477,14 @@ static function OnWebSocketMessage(oMsg: WebSocketMessage) {
 
 1. Tomcat <code>startup.sh</code> 开头
    > declare -x CATALINA_OPTS="-server -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=3316"
+
+   ubuntu下declare报错: 
+
+   ```bash
+   sudo dpkg-reconfigure dash
+   # 选否  ubuntu默认sh 指向了dash  通过上边命令  解除dash与sh的关联
+   ```
+   
 2. Jar
    > java -jar -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=3316 xxx.jar
 
