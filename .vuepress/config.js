@@ -36,6 +36,7 @@ module.exports = {
         sidebar: {
           "/java/": javaSider("New一个对象"),
           "/go/": goSider("好大一只土拨鼠"),
+          "/python/": pythonSider("好大一条蛇"),
           "/open/": openSider(),
           "/sharp/": sharpSider(),
           "/web/": webSider(),
@@ -49,6 +50,10 @@ module.exports = {
           {
             text: "Java",
             link: "/java/",
+          },
+          {
+            text: "Python",
+            link: "/python/",
           },
           {
             text: "Go",
@@ -103,6 +108,16 @@ function javaSider(title) {
 }
 
 function goSider(title) {
+  return [
+    {
+      title,
+      collapsable: false,
+      children: [""],
+    },
+  ];
+}
+
+function pythonSider(title) {
   return [
     {
       title,

@@ -98,3 +98,18 @@ bindkey -s "^[Oj" "*"
 bindkey -s "^[Oo" "/"
 
 ```
+
+## Vim
+
+> .vimrc
+
+搜索高亮 <code>set hlsearch</code>
+
+## dash
+
+ubuntu下declare报错: 
+
+   ```bash
+   sudo dpkg-reconfigure dash
+   # 选否  ubuntu默认sh 指向了dash  通过上边命令  解除dash与sh的关联
+   ```

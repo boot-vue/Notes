@@ -119,7 +119,12 @@ DELETE /{index}/_doc/{id}
 
 ## Filebeat
 
-> input-->filter--->output
+> input-->filter--->output modules
+```bash
+filebeat modules list
+filebeat modules enable xxxx
+# 模块配置文件 modeule.d/xxx.yml
+```
 
 ## Logstash
 
