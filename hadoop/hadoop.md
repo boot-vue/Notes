@@ -195,7 +195,7 @@ start-yarn.sh  # Start ResourceManager daemon and NodeManager daemon
 
 ## wordcount
 
-```log
+```shell
 hadoop jar hadoop/share/hadoop/mapreduce/hadoop-mapreduce-examples-3.2.1.jar wordcount /data/release /data/output
 2020-06-17 14:41:59,752 INFO client.RMProxy: Connecting to ResourceManager at hadoop1/192.168.221.90:8032
 2020-06-17 14:42:00,223 INFO mapreduce.JobResourceUploader: Disabling Erasure Coding for path: /tmp/hadoop-yarn/staging/battery/.staging/job_1592404527237_0001
