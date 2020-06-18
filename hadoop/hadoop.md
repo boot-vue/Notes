@@ -1,20 +1,22 @@
 # Hadoop
 
-## 结构
+:::tip
+基础结构
+:::
 
-### NameNode
+## NameNode
 
 > 存储文件元数据, 索引信息
 
-### DataNode
+## DataNode
 
 > 文件数据&数据块校验信息
 
-### Secondary NameNode
+## Secondary NameNode
 
 > 监控 HDFS 状态的后台进程
 
-### Yarn
+## Yarn
 
 > 资源调度
 
@@ -23,13 +25,15 @@
 3. app master: 切分数据, 申请资源&分配给内部的任务, 任务监控
 4. container: 容器, 抽象的资源概念, 封装了节点上的资源信息(内存,cpu.....)
 
-### Map Reduce
+## Map Reduce
 
 > map: 并行处理数据 reduce: 汇总 map 处理的数据
 
-## 配置
+:::tip
+集群配置
+:::
 
-### core-site.xml
+## core-site.xml
 
 > namenode 信息
 
@@ -46,11 +50,11 @@
 </configuration>
 ```
 
-### hadoop-env.sh ?? 没必要
+## hadoop-env.sh ?? 没必要
 
 > 指定 JAVA_HOME
 
-### hdfs-site.xml
+## hdfs-site.xml
 
 > 数据副本数, 默认 3
 
@@ -63,9 +67,11 @@
 </configuration>
 ```
 
-## 启动 HDFS
+:::tip
+启动 HDFS
+:::
 
-### 格式化 name node
+## 格式化 name node
 
 > 只在第一次启动格式化, namenode 与 datanode clusterId 需要保持一致
 
@@ -73,12 +79,12 @@
 hdfs namenode -format
 ```
 
-### 启动 name node
+## 启动 name node
 
 > hadoop-daemon.sh start namenode (旧)
 > hdfs --daemon start namenode (新)
 
-### 启动 data node
+## 启动 data node
 
 > hadoop-daemon.sh start datanode (旧)
 > hdfs --daemon start datanode (新)
@@ -93,11 +99,11 @@ start-dfs.sh  # Start NameNode daemon and DataNode daemon
 
 ```
 
-### web: 9870
+## web: 9870
 
 > 不同版本, web 端口不一定相同
 
-### hdfs
+## hdfs
 
 > 默认文件 block size 128M
 
@@ -108,13 +114,15 @@ hdfs dfs -[command] # hdfs dfs -mkdir /data
 hdfs dfs -put local-file-path hdfs-path
 ```
 
-## 启动 YARN
+:::tip
+启动 YARN
+:::
 
-### yarn-env.sh ?? 没必要
+## yarn-env.sh ?? 没必要
 
 > 指定 JAVA_HOME
 
-### yarn-site.xml
+## yarn-site.xml
 
 > reduce 获取数据的方式
 
@@ -135,11 +143,11 @@ hdfs dfs -put local-file-path hdfs-path
 </configuration>
 ```
 
-### mapred-env.sh ?? 没必要
+## mapred-env.sh ?? 没必要
 
 > 指定 JAVA_HOME
 
-### mapred-site.xml
+## mapred-site.xml
 
 > mapreduced 相关配置
 
@@ -168,12 +176,12 @@ hdfs dfs -put local-file-path hdfs-path
 </configuration>
 ```
 
-### 启动 resource manager
+## 启动 resource manager
 
 > yarn-daemon.sh start resourcemanager (旧)
 > yarn --daemon start resourcemanager (新)
 
-### 启动 node manager
+## 启动 node manager
 
 > yarn-daemon.sh start nodemanager (旧)
 > yarn --daemon start nodemanager (新)
@@ -189,7 +197,7 @@ start-yarn.sh  # Start ResourceManager daemon and NodeManager daemon
 
 ```
 
-### web: 8088
+## web: 8088
 
 > 端口可能有变化
 
