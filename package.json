@@ -1,11 +1,10 @@
 {
   "dependencies": {
-    "@vuepress/core": "^1.5.0",
     "moment": "^2.26.0"
   },
   "devDependencies": {
-    "@vuepress/plugin-google-analytics": "^1.5.0",
-    "@vuepress/plugin-nprogress": "^1.5.0",
-    "vuepress": "^1.5.0"
+    "@vuepress/plugin-google-analytics": "^1.5.2",
+    "@vuepress/plugin-nprogress": "^1.5.2",
+    "vuepress": "^1.5.2"
   }
 }

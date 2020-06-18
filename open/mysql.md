@@ -149,6 +149,7 @@ datadir		= /var/lib/mysql
 # Disabling symbolic-links is recommended to prevent assorted security risks
 symbolic-links=0
 character-set-server=utf8mb4
+collation-server=utf8mb4_general_ci
 max_connections=1000
 
 [client]

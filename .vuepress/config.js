@@ -37,6 +37,7 @@ module.exports = {
           "/java/": javaSider("New一个对象"),
           "/go/": goSider("好大一只土拨鼠"),
           "/python/": pythonSider("好大一条蛇"),
+          "/hadoop/": hadoopSider(),
           "/open/": openSider(),
           "/sharp/": sharpSider(),
           "/web/": webSider(),
@@ -52,12 +53,16 @@ module.exports = {
             link: "/java/",
           },
           {
-            text: "Python",
-            link: "/python/",
+            text: "Hadoop",
+            link: "/hadoop/",
           },
           {
             text: "Go",
             link: "/go/",
+          },
+          {
+            text: "Python",
+            link: "/python/",
           },
           {
             text: "好工具",
@@ -137,6 +142,10 @@ function webSider() {
 
 function openSider() {
   return ["", "mysql", "redisson"];
+}
+
+function hadoopSider() {
+  return ["", "hadoop"];
 }
 
 function sharpSider() {
