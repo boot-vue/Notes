@@ -1,6 +1,6 @@
 # Hadoop
 
-:::tip
+::: tip
 基础结构
 :::
 
@@ -29,7 +29,7 @@
 
 > map: 并行处理数据 reduce: 汇总 map 处理的数据
 
-:::tip
+::: tip
 集群配置
 :::
 
@@ -67,7 +67,7 @@
 </configuration>
 ```
 
-:::tip
+::: tip
 启动 HDFS
 :::
 
@@ -114,7 +114,7 @@ hdfs dfs -[command] # hdfs dfs -mkdir /data
 hdfs dfs -put local-file-path hdfs-path
 ```
 
-:::tip
+::: tip
 启动 YARN
 :::
 
