@@ -1,4 +1,4 @@
-# Hadoop
+# Hadoop 基础
 
 ::: tip
 基础结构
@@ -33,12 +33,18 @@
 集群配置
 :::
 
+> hdfs: name node 与 secondary namenode yarn: resourcemanger 都比较耗内存, 分在不同机器放
+> namenode : hadoop1 ,secondary namenode: hadoop3 , resourcemanager: hadoop2
+> 进群启动, workers 配置文件指定所有主机的 hostname
+> 第一次启动注意先格式化 namanode 所在节点, start-all.sh 应当在 resourcemanager 上启动整个集群
+
 ## core-site.xml
 
 > namenode 信息
 
 ```xml
 <configuration>
+  <!-- name node -->
   <property>
     <name>fs.defaultFS</name>
     <value>hdfs://hadoop1:9000</value>
@@ -46,6 +52,11 @@
   <property>
     <name>hadoop.tmp.dir</name>
     <value>/home/battery/hadoop/tmp</value>
+  </property>
+  <!-- web操作默认用户 -->
+  <property>
+    <name>hadoop.http.staticuser.user</name>
+    <value>battery</value>
   </property>
 </configuration>
 ```
@@ -62,7 +73,12 @@
 <configuration>
     <property>
         <name>dfs.replication</name>
-        <value>1</value>
+        <value>3</value>
+    </property>
+    <!-- secondary namenode -->
+    <property>
+        <name>dfs.namenode.secondary.http-address</name>
+        <value>hadoop3:9868</value>
     </property>
 </configuration>
 ```
@@ -110,6 +126,8 @@ start-dfs.sh  # Start NameNode daemon and DataNode daemon
 ```bash
 hdfs dfs -[command] # hdfs dfs -mkdir /data
 
+(新) hadoop fs [-command]
+
 # 上传本地文件到hdfs
 hdfs dfs -put local-file-path hdfs-path
 ```
@@ -138,7 +156,17 @@ hdfs dfs -put local-file-path hdfs-path
     </property>
     <property>
         <name>yarn.resourcemanager.hostname</name>
-        <value>hadoop1</value>
+        <value>hadoop2</value>
+  </property>
+  <!-- 日志 -->
+  <property>
+    <name>yarn.log-aggregation-enable</name>
+    <value>true</value>
+  </property>
+  <!-- 7天 -->
+  <property>
+    <name>yarn.log-aggregation.retain-seconds</name>
+    <value>604800</value>
   </property>
 </configuration>
 ```

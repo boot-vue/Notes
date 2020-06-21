@@ -145,7 +145,7 @@ function openSider() {
 }
 
 function hadoopSider() {
-  return ["", "hadoop"];
+  return ["", "hadoop", "hdfs", "mapreduce"];
 }
 
 function sharpSider() {
