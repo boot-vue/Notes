@@ -34,8 +34,11 @@
 ## 命令
 
 > hadoop fs or hdfs dfs, dfs 是 fs 的实现类
+
 > hadoop distcp hdfs://.... hdfs://... 集群间数据拷贝
+
 > hadoop archive -archiveName xxx.har -p /data/.... /dest/... 归档文件
+
 > hadoop fs -ls -R har:///dest/...
 
 ## Java
