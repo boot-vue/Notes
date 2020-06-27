@@ -19,7 +19,7 @@
 4. extend Reduce
 5. 输出数据是 KV 键值对形式
 6. reduce()方法: 具体的业务逻辑, 每组相同的 K <K,V>只调用一次 reduce()
-7. driver: yarn 客户端,提交 job 到 yarn 集群中
+7. driver: yarn 客户端,提交 job(split 切片/jar/xml 配置信息...) 到 yarn 集群中
 
 ::: tip
 Mapper
@@ -94,7 +94,7 @@ Driver
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(IntWritable.class);
 
-        FileInputFormat.setInputPaths(job, new Path(args[0]));
+        FileInputFormat.setInputPaths(job, new Path(args[0])); // 输入data会进行切割
         FileOutputFormat.setOutputPath(job, new Path(args[1]));
 
         // 提交job
@@ -108,3 +108,101 @@ Driver
 3. write/readFields 字段顺序要一致
 4. 重写 toSring()
 5. 需要放到 Key 中的必须能排序, 实现 Comparable 接口
+
+## Map Task
+
+数据切片尽量按数据块大小来(128M), 每个切片开启一个 map task
+
+## FileInputFormat
+
+切片, job 提交后 Yarn app master 会根据切片数计算好需要的 map task 数量
+
+## TextInputFormat
+
+> FileInputFormat 默认实现类, 按行读取
+
+1. key : 改行在整个文件中的起始字节偏移量, LongWritable
+2. Value: 一行内容, 不包含换行符
+
+## CombineTextInputFormat
+
+小文件过多时, 逻辑上分到一个切片上
+
+```java
+job.setInputFormatClass(CombineTextInputFormat.class);
+
+setMaxInputSplitSize(job,size)
+```
+
+## KeyValueTextInputFormat
+
+> 按行切割, 每一行按 tab(\t)分割为 key 和 value
+
+## NLineInputFormat
+
+> 按指定行数 N 切片
+
+## 自定义 FileInputFormat
+
+1. extends FileInputFormat
+2. 改写 recodrReader, 定义读取文件封装为 k,v 的逻辑, 交给 Mapper/Reducer 处理
+3. 使用 SequenceFileOutPutFormat 输出合并文件
+
+## Shuffle
+
+> Mapper 与 Reducer 之间的数据处理过程, 分区 排序 压缩......
+
+1. 分区: 默认按 key 的 (hashcode%reducer task 个数) 分区, 不同分区会输出到不同文件, partition 从 0 开启
+
+```bash
+自定义分区:
+    1. extneds Partitioner
+    2. job.setPartitionerClass
+    3. 设置相应数量的reducer task
+```
+
+2. 排序: 默认按 key 字典排序
+
+```bash
+1. 部分排序: 单个文件内部有序
+2. 全排序: reduce只输出一个文件, 对于整个文件排序
+3. 二次排序
+4. 自定义排序: 自定义对象作为key, 实现WritableComparable接口
+```
+
+3. Combiner: 压缩合并
+
+> 继承自 Reducer, 对每个 map task 的输出进行局部汇总, 减少数据传输. 不能改变最终结果(求平均值这种就不适合)
+
+```bash
+1. extends Reducer
+2. job.setCombinerClass
+# 或者直接指定CombinerClass为reducerClass
+```
+
+4. GroupingComparator
+
+> 分组排序, 对 map task 输出的 key 进一步排序
+
+```bash
+1. extends WritableComparator
+2. 无参构造方法调用 super(Bean.class, true), true 为创建 bean 对象, false 对象全为 null
+3. 重写 compare 方法
+4. job.setGroupingComparatorClass
+```
+
+## OutPutFormat
+
+1. TextOutPutFormat 默认按行写
+2. SequenceFileOutPutFormat
+3. 自定义 OutPutFormat
+
+```bash
+1. extends FileOutPutFormat
+2. 改写RecordWriter
+```
+
+## Join
+
+1. Map 阶段: 不同来源的数据打标签, 连接字段作为 key(比如: id), 其余部分为 value
+2. Reduce: 每个分组中不同来源的记录分开, 最后合并
