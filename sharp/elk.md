@@ -1,5 +1,18 @@
 # ELK
 
+## 内核参数修改
+
+```bash
+/etc/sysctl.conf  #vm.max_map_count=262144
+sysctl -p
+
+ulimit -a
+
+/etc/security/limits.conf
+# *　　soft　　nofile　　65536
+# *　　hard　　nofile　　65536
+```
+
 ## 增删改查
 
 > 7 之后的版本无需指定 type : /{index}/\_doc/{id}, /{index}/\_doc, or /{index}/\_create/{id}
@@ -16,6 +29,7 @@ PUT /demo
 
 # 查询过滤字段
 GET /demo/_doc/{id}?_source=name,age
+GET /demo/_search?q=name:张
 
 # put 需要指定 id(已存在, 会覆盖数据)    post : elastic自动生成id
 PUT /demo/_doc/1
@@ -29,9 +43,7 @@ PUT /demo/_doc/1
 
 POST /demo/_update/1
 {
- "doc":{
    "name":"李四"
- }
 }
 
 
@@ -120,6 +132,7 @@ DELETE /{index}/_doc/{id}
 ## Filebeat
 
 > input-->filter--->output modules
+
 ```bash
 filebeat modules list
 filebeat modules enable xxxx

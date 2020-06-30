@@ -8,6 +8,34 @@
 `$@` 也是所有的参数, 把每个参数都当做一个独立的个体
 `$?` shell 上一次执行的状态, 0:正确执行 其它:有错误
 
+## find
+
+```bash
+find /tmp/ -type f -name "lllll*" -mmin +1200 -delete
+```
+
+1. -type：根据不同的文件类型筛选
+
+```
+f	普通文件
+d	目录文件
+l	符号链接文件
+b	块设备 文件
+c	字符设备文件
+p	管道文件
+s	套接字文件
+```
+
+2. 以天为单位 : atime(文件的最后访问时间)、mtime(文件的最后修改时间)、ctime(文件最后改变时间)
+3. 以分钟为单位 : amin(文件的最后访问时间)、mmin(文件的最后修改时间)、cmin(文件最后改变时间)
+4. -print：输出至标准输出；默认的动作；
+5. -ls：类似于对查找到的文件执行“ls -l”命令，输出文件的详细信息；
+6. -delete：删除查找到的文件；
+7. -fls /PATH/TO/SOMEFILE：把查找到的所有文件的长格式信息保存至指定文件中；
+8. -ok COMMAND {} \; ：对查找到的每个文件执行由 COMMAND 表示的命令；每次操作都由用户进行确认；
+9. -exec COMMAND {} \; ：对查找到的每个文件执行由 COMMAND 表示的命令；
+10. find 查找到的文件太多 find ................ | xargs COMMAND
+
 ## 运算符
 
 `expr + - \* / %` expr 运算符之间要有空格, 没有小括号, 多次运算需要分开用 \` 包裹 :`expr`expr 2 + 3`\* 4`
@@ -82,7 +110,7 @@
 
 `read [-ers] [-a array] [-d delim] [-i text] [-n nchars] [-N nchars] [-p prompt] [-t timeout] [-u fd] [name ...输入内容赋给的变量]`
 
-```text
+```
 -a 后跟一个变量，该变量会被认为是个数组，然后给其赋值，默认是以空格为分割符。
 -d 后面跟一个标志符，其实只有其后的第一个字符有用，作为结束的标志。
 -p 后面跟提示信息，即在输入前打印提示信息。
@@ -140,7 +168,7 @@ sum 10 20
 cut OPTION... [FILE]...
 ```
 
-```text
+```
 -b ：以字节为单位进行分割。这些字节位置将忽略多字节字符边界，除非也指定了 -n 标志。
 -c ：以字符为单位进行分割。
 -d ：自定义分隔符，默认为制表符。
@@ -157,7 +185,7 @@ cut OPTION... [FILE]...
 sed [OPTION]... {script-only-if-no-other-script} [input-file]...
 ```
 
-```text
+```
 -e<script>或--expression=<script> 以选项中指定的script来处理输入的文本文件。
 -f<script文件>或--file=<script文件> 以选项中指定的script文件来处理输入的文本文件。
 -h或--help 显示帮助。
@@ -188,7 +216,7 @@ awk [POSIX or GNU style options] [--] 'program' file ...
 
 ```
 
-```text
+```
 -F fs or --field-separator fs
 指定输入文件折分隔符，fs是一个字符串或者是一个正则表达式，如-F:
 -v var=value or --asign var=value
@@ -227,7 +255,7 @@ awk -F: '/^root/{print $7}' passwd
 
 按行处理文件, 切割文件, 指定排序
 
-```text
+```
 -b 忽略每行前面开始出的空格字符。
 -c 检查文件是否已经按照顺序排序。
 -d 排序时，处理英文字母、数字及空格字符外，忽略其他的字符。

@@ -17,7 +17,7 @@
 
 ## Protocal Buffers
 
-```proto
+```protobuf
 syntax="proto2";
 package  xxx;
 option java_package="xxxx";
@@ -56,8 +56,14 @@ protoc --java_out=src/main/java src/xxxxx.ptoto
 
 > proto3 request/stream request <----> response/stream response
 
-```proto
-option java_multiple_files=true;
+```protobuf
+syntax = "proto3";
+import "google/protobuf/empty.proto";
+package xxxx;
+option java_package = "com.xxxxxx.proto";
+option java_outer_classname = "HHH";
+option optimize_for = SPEED;
+option java_multiple_files = true;
 
 service xx {
     rpc Test(Request xx) returns (Response) {}
