@@ -156,10 +156,11 @@ class T // 属性对应配置项
 pre / post
 
 # 自定义过滤器
-class 必须GateWayFilterFactory结尾
-
-# 全局过滤器....
 order越小越先执行
+
+1. 过滤器工厂: class 必须GateWayFilterFactory结尾, 这种方式可以在配置文件中指定过滤器
+2.  implements GatewayFilter, Ordered
+3. implements GlobalFilter, Ordered
 ```
 
 ![自定义Filter](./imgs/filter.png)
