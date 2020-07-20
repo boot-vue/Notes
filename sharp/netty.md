@@ -90,7 +90,7 @@ float double int32 bool string bytes sint64 map...
 
 java:
 
-```
+```java
 extends XxxServiceGrpc.XxxServiceImplBase{
 // 重写 ptoto中定义的rpc方法
 }
