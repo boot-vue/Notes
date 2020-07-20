@@ -29,6 +29,8 @@ message Person{
     required int32 age=2;
     optional String address=3;
     repeated phones=4;
+    map<string, Project> projects = 7;
+
 
     enum xx_type {
         IPHONE=0;
@@ -78,6 +80,14 @@ message Response{
 }
 ```
 
+::: tip
+类型
+:::
+
+```bash
+float double int32 bool string bytes sint64 map...
+```
+
 java:
 
 ```
@@ -86,4 +96,45 @@ extends XxxServiceGrpc.XxxServiceImplBase{
 }
 
 StreamObserver
+
+// Server
+
+public class GrpcServer {
+
+    private Server server;
+
+    @PostConstruct
+    private void start() throws IOException, InterruptedException {
+        server = ServerBuilder.forPort(....).addService(xxxxxService).build().start();
+        Runtime.getRuntime().addShutdownHook(new Thread(GrpcServer.this::stop));
+
+        block();
+    }
+
+    private void stop() {
+        if (server != null) {
+            server.shutdown();
+        }
+    }
+
+    private void block() throws InterruptedException {
+        if (server != null) {
+            server.awaitTermination();
+        }
+    }
+}
+
+// client
+ManagedChannel channel = ManagedChannelBuilder.forAddress(....)
+                .enableRetry()
+                .usePlaintext()
+                .build();
+
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            if (channel != null) {
+                channel.shutdown();
+            }
+        }));
+
+        xxxxGrpc.xxxBlockingStub blockingStub = xxxxGrpc.newBlockingStub(channel);
 ```

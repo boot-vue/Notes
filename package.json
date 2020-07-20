@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "moment": "^2.26.0"
+    "moment": "^2.27.0"
   },
   "devDependencies": {
     "@vuepress/plugin-google-analytics": "^1.5.2",
