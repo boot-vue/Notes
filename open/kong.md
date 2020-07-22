@@ -50,3 +50,7 @@ sudo docker run -d -p 1337:1337 \
           --name konga \
           pantsel/konga    
 ```
+
+## 使用
+
+> upstream --> services --> routes
