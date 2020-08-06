@@ -35,7 +35,7 @@
 
 > hdfs: name node 与 secondary namenode yarn: resourcemanger 都比较耗内存, 分在不同机器放
 > namenode : hadoop1 ,secondary namenode: hadoop3 , resourcemanager: hadoop2
-> 进群启动, workers 配置文件指定所有主机的 hostname
+> 集群启动, workers 配置文件指定所有主机的 hostname
 > 第一次启动注意先格式化 namanode 所在节点, start-all.sh 应当在 resourcemanager 上启动整个集群
 
 ## core-site.xml

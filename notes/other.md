@@ -169,7 +169,7 @@ public class Consumer {
 
 1. 镜像队列 : 配置 1 个 Master, 多个 Slaver
 
-   ```txt
+   ```bash
     1. master节点 /var/lib/rabbitmq/.erlang.cookie 拷贝到各个节点
     2. 启动服务 rabbitmq-server -detached
     3. 备用节点停止服务 rabbitmqctl stop_app
