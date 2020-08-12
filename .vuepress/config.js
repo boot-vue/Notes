@@ -141,7 +141,7 @@ function webSider() {
 }
 
 function openSider() {
-  return ["", "mysql", "redisson","kong"];
+  return ["", "mysql", "redisson", "kong"];
 }
 
 function hadoopSider() {
