@@ -93,7 +93,7 @@ WantedBy=multi-user.target  # 多用户
 
 ## 函数式编程
 
-`Function`: 两个方法 apply andThen
+`Function`: apply andThen
 `Consumer`: accept 方法
 `Predicate` test 方法
 `Supplier`: get 方法
@@ -307,13 +307,13 @@ uploadArchives {
                 groupId group
                 packaging TYPE
                 description DESCRIPTION
-                licenses {  
-                    license {  
-                        name 'The Apache Software License, Version 2.0'  
-                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'  
-                        distribution 'xxxxxx'  
-                    }  
-                }  
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        distribution 'xxxxxx'
+                    }
+                }
             }
         }
     }

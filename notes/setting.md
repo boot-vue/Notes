@@ -50,21 +50,6 @@ location ~ \.(jpeg|png|gif){
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 ```
 
-反向代理,Java 获取真实 IP:
-
-```java
-String ip = request.getHeader("x-forwarded-for");
-if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-    ip = request.getHeader("Proxy-Client-IP");
-}
-if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-    ip = request.getHeader("WL-Proxy-Client-IP");
-}
-if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-    ip = request.getRemoteAddr();
-}
-```
-
 ## sudo
 
 > 免输密码 /etc/sudoers.d/sudoers battery ALL=(ALL) NOPASSWD : ALL
@@ -476,8 +461,9 @@ static function OnWebSocketMessage(oMsg: WebSocketMessage) {
 ## 远程调试
 
 1. Tomcat <code>startup.sh</code> 开头
+
    > declare -x CATALINA_OPTS="-server -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=3316"
-   
+
 2. Jar
    > java -jar -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=3316 xxx.jar
 

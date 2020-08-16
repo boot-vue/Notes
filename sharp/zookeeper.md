@@ -27,6 +27,8 @@ zookeeper data 目录下新建 `myid` 文件, 里边放 id 值: 1,2,3...., 不�
 zoo.cfg 增加节点配置
 
 ```bash
+dataDir=/data
+dataLogDir=/datalog
 server.1=xxxx:2888:3888
 server.2=xxxx:2888:3888
 .......
