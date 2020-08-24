@@ -458,6 +458,23 @@ static function OnWebSocketMessage(oMsg: WebSocketMessage) {
 }
 ```
 
+### 内置命令
+
+```bash
+1. select xxx:  选择xxx类型的,  例如 select html , select image ,select video.... , content-type的类型
+2. allbut xxxx: allbut image-->只选择图片类型的, 会把其它捕获都删除!!!!
+3. ?xxx: 选择url中包含xxx的
+4. \>size <size: 过滤响应内容大小, 只能写数字 >40000   单位(b)
+5. @host: 请求url包含xxx的, 例如:  @oschina.net
+6. =status: =200 ==404 过滤响应码
+7. Bpafter， Bps, bpv, bpm, bpu: 断点命令,  也可以在filters中设置
+   Bpafter xxx: 中断 URL 包含指定字符的全部 session 响应
+    Bps xxx: 中断 HTTP 响应状态为指定字符的全部 session 响应。
+    Bpv xxx: 中断指定请求方式的全部 session 响应
+    Bpm xxx: 中断指定请求方式的全部 session 响应。等同于bpv xxx
+    Bpu xxx:与bpafter类似。
+```
+
 ## 远程调试
 
 1. Tomcat <code>startup.sh</code> 开头

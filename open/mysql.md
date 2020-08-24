@@ -23,7 +23,7 @@ mixed: 自动选择
 
 > 创建一个用户, 赋予 replaction slave 权限
 
-> CHANGE MASTER TO MASTER_DELAY = 1800；单位为秒   延迟从库同步时间
+> CHANGE MASTER TO MASTER_DELAY = 1800；单位为秒 延迟从库同步时间
 
 > show master status;
 
@@ -224,3 +224,239 @@ default-character-set=utf8mb4
 default-collation=utf8mb4_general_ci
 
 ```
+
+## 存储过程
+
+```bash
+CREATE DEFINER=`root`@`localhost` PROCEDURE `test`()
+BEGIN
+	SELECT * from student;
+
+END
+```
+
+调用:
+
+> call test();
+
+- 变量
+
+  > DECLARE x, y INT DEFAULT 0; <code>声明</code>
+  > SET x=10; <code>赋值</code>
+  > select ... INTO y from....; <code>赋值</code>
+
+- 参数
+  > <code>IN OUT INOUT</code>
+
+1. <code>IN</code>
+
+```bash
+CREATE PROCEDURE xxx(IN zz VARCHAR(255))
+调用的时候: call xxx("测试")
+```
+
+2. <code>OUT</code>
+
+```bash
+CREATE PROCEDURE xxx(
+ IN x VARCHAR(25),
+ OUT y INT)
+ 调用: call xxx("测试",@oo);
+ select @oo;  //@... 局部变量
+```
+
+- 流程控制
+
+1.  <code>IF</code>
+
+```bash
+IF expression THEN
+   statements;
+END IF;
+```
+
+2.  <code>CASE</code>
+
+```bash
+CASE  case_expression
+   WHEN when_expression_1 THEN commands
+   WHEN when_expression_2 THEN commands
+   ...
+   ELSE commands
+END CASE;
+```
+
+3.  <code>while</code>
+
+```bash
+WHILE expression DO
+   statements
+END WHILE
+```
+
+4.  <code>repeat</code>
+
+```bash
+REPEAT
+ statements;
+UNTIL expression
+END REPEAT
+```
+
+5.  <code>loop</code>
+    > leave :跳出循环
+    > iterate: 继续下一次循环,类似 continue
+
+```bash
+xxx: LOOP
+...
+end xxx;
+```
+
+- <code>游标</code>
+  > 声明: DECLARE cursor_name CURSOR FOR SELECT_statement;
+  > OPEN 语句初始化游标的结果集: open cursor_name;
+  > FETCH 检索游标下一行: FETCH cursor_name INTO variables;
+  > DECLARE CONTINUE HANDLER FOR NOT FOUND SET finished = 1; //游标结束
+  > 完整声明:
+
+```bash
+DECLARE finished INTEGER DEFAULT 0;
+DECLARE email varchar(255) DEFAULT "";
+
+DEClARE email_cursor CURSOR FOR SELECT email FROM employees;
+
+DECLARE CONTINUE HANDLER FOR NOT FOUND SET finished = 1;
+```
+
+遍历游标:
+
+```bash
+OPEN email_cursor;
+get_email: LOOP
+FETCH email_cursor INTO v_email;
+IF finished = 1 THEN
+LEAVE get_email;
+END IF;
+SET email_list = CONCAT(v_email,";",email_list);
+END LOOP get_email;
+
+CLOSE email_cursor;
+```
+
+- 异常处理
+
+1. <code>signal/resignal</code>
+   > 相当于直接抛出 sql 异常
+
+```bash
+IF(C != 1) THEN
+ SIGNAL SQLSTATE '45000' //只能使用sqlstate的值
+ SET MESSAGE_TEXT = '......'; //只能是MESSAGE_TEXT，MYSQL_ERRORNO，CURSOR_NAME
+ END IF;
+```
+
+2. <code>handler</code>
+
+```bash
+DECLARE handler_action HANDLER
+    FOR condition_value [, condition_value] ...
+    statement
+
+handler_action:
+    | CONTINUE
+    | EXIT
+
+condition_value:
+    mysql_error_code
+    | SQLSTATE [VALUE] sqlstate_value
+    | condition_name
+    | SQLWARNING
+    | NOT FOUND
+    | SQLEXCEPTION
+```
+
+### 存储函数
+
+```bash
+CREATE FUNCTION function_name(param1,param2,…)
+    RETURNS datatype
+   [NOT] DETERMINISTIC
+ statements
+```
+
+> 必须有 returns, 仅返回一个值
+
+### 触发器
+
+```bash
+CREATE TRIGGER trigger_name trigger_time trigger_event ON tb_name FOR EACH ROW trigger_stmt
+trigger_name：触发器的名称
+tirgger_time：触发时机，为BEFORE或者AFTER
+trigger_event：触发事件，为INSERT、DELETE或者UPDATE
+tb_name：表示建立触发器的表明，就是在哪张表上建立触发器
+trigger_stmt：触发器的程序体，可以是一条SQL语句或者是用BEGIN和END包含的多条语句
+所以可以说MySQL创建以下六种触发器：
+BEFORE INSERT,BEFORE DELETE,BEFORE UPDATE
+AFTER INSERT,AFTER DELETE,AFTER UPDATE
+```
+
+### event 事件处理
+
+> mysql 默认关闭了事件执行, 配合文件里记得开启 event_scheduler = 1 #或者 ON
+
+```bash
+CREATE
+    [DEFINER = { user | CURRENT_USER }]
+    EVENT
+    [IF NOT EXISTS]
+    event_name
+    ON SCHEDULE schedule
+    [ON COMPLETION [NOT] PRESERVE]
+    [ENABLE | DISABLE | DISABLE ON SLAVE]
+    [COMMENT 'comment']
+    DO event_body;
+
+schedule:
+    AT timestamp [+ INTERVAL interval] ...
+  | EVERY interval
+    [STARTS timestamp [+ INTERVAL interval] ...]
+    [ENDS timestamp [+ INTERVAL interval] ...]
+
+interval:
+    quantity {YEAR | QUARTER | MONTH | DAY | HOUR | MINUTE |
+              WEEK | SECOND | YEAR_MONTH | DAY_HOUR | DAY_MINUTE |
+              DAY_SECOND | HOUR_MINUTE | HOUR_SECOND | MINUTE_SECOND}
+```
+
+### mysql 定时备份,邮件
+
+> mysqldump -uroot -pxxx -RE --databases xxx > dd.sql
+> -RE: 导出存储过程和 event
+
+邮件发送配置:
+sendmail: 要启动服务
+
+/etc/mail.rc
+
+```bash
+set from=yourname@your-domain.com
+set smtp=mail.your-domain.com
+set smtp-auth-user=yourname
+set smtp-auth-password=yourpasswd
+set smtp-auth=login
+```
+
+mutt /etc/Muttrc:
+
+```bash
+set use_from=yes
+set realname="data"
+set from=data@darkstone.cc
+set envelope_from=yes
+```
+
+> mutt xxx@cc.com -s "标题" -a 附件
+
+> 有问题: mail 命令发送小文件可以, 大文件不能当附件. mutt 没成功过
+> echo "正文内容"|mail -s "标题" -a 附件 xx@cc.com
