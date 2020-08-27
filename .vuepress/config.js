@@ -133,7 +133,7 @@ function pythonSider(title) {
 }
 
 function notesSider() {
-  return ["setting", "shell", "linux", "pass", "other", "xianyu"];
+  return ["setting", "shell", "linux", "nginx", "pass", "other", "xianyu"];
 }
 
 function webSider() {
