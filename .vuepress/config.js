@@ -107,7 +107,7 @@ function javaSider(title) {
     {
       title,
       collapsable: false,
-      children: ["", "guava", "kotlin", "gradle", "cloud", "security"],
+      children: ["", "guava", "kotlin", "gradle", "dubbo", "cloud", "security"],
     },
   ];
 }

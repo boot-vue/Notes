@@ -3,6 +3,7 @@
 ## SplitChunks
 
 ```json
+// 分包
 splitChunks: {
      chunks: "async", // 必须三选一： "initial" | "all"(推荐) | "async" (默认就是async)
      minSize: 30000, // 最小尺寸，30000  bytes
@@ -27,4 +28,17 @@ splitChunks: {
      }
   }
 
+```
+
+## CompressionPlugin
+
+```json
+// gzip压缩
+new CompressionPlugin({
+  "filename": "[path].gz[query]",
+  "algorithm": "gzip",
+  "test": /\.js$|\.css$|\.html$/,
+  "threshold": 10240,
+  "minRatio": 0.8
+})
 ```
