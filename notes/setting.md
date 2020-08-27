@@ -21,35 +21,6 @@ $ sudo yum install devtoolset-7
 $ scl enable devtoolset-7 bash
 ```
 
-## Nginx
-
-跨域:
-
-```nginx
- location /test/{
-    add_header 'Access-Control-Allow-Origin' '*';
-    add_header 'Access-Control-Allow-Credentials' 'true';
-    proxy_pass http://127.0.0.1:8080/test/;
-}
-```
-
-静态资源配置:
-
-```nginx
-location ~ \.(jpeg|png|gif){
-            root /home/feiyanImage;
-}
-```
-
-反向代理 IP 转发配置:
-
-```nginx
-    proxy_set_header Host $host;
-    proxy_set_header X-Real-IP $remote_addr;
-    proxy_set_header REMOTE-HOST $remote_addr;
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-```
-
 ## sudo
 
 > 免输密码 /etc/sudoers.d/sudoers battery ALL=(ALL) NOPASSWD : ALL
