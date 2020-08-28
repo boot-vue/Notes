@@ -248,3 +248,17 @@ location ~ \.(jpeg|png|gif){
     proxy_set_header REMOTE-HOST $remote_addr;
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 ```
+
+### basic auth
+
+<code>apache2-utils</code>
+
+```bash
+htpasswd -c -d /etc/nginx/pass_file  xxxxxx
+
+
+server {
+    auth_basic "请输入密码";
+    auth_basic_user_file /etc/nginx/pass_file; # 存放密码文件的路径
+}
+```
