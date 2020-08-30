@@ -262,3 +262,17 @@ server {
     auth_basic_user_file /etc/nginx/pass_file; # 存放密码文件的路径
 }
 ```
+
+### 日志分割
+
+```nginx
+  # 不知道好不好用
+    map $time_iso8601 $logdate {
+ 			 '~^(?<ymd>\d{4}-\d{2})' $ymd;
+
+ 			# 也可以按照天进行分割
+ 			#'~^(?<ymd>\d{4}-\d{2}-\d{2})' $ymd;
+  		default  date-not-found';
+		}
+    access_log  logs/access-$logdate.log main;
+```
