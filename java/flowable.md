@@ -38,8 +38,8 @@ ProcessInstance processInstance = runtimeService.startProcessInstanceById(holida
 ```java
 // 流程实例阶段  任务管理
 List<Task> taskList = taskService.createTaskQuery()
-                .processDefinitionId(holiday.getId())
-                .taskAssignee("zs").list();
+                .processDefinitionId(holiday.getId())   // 流程实例id
+                .taskAssignee("zs").list();             // 任务负责人/指派人
 
         taskList.forEach(e -> {
             System.out.println(e.toString());
