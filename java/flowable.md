@@ -120,3 +120,50 @@ runtimeService.setVariables(processInstanceId,variables);
 // 当前任务设置变量
 taskService.setVariables(taskId,variables);
 ```
+
+## Candidate
+
+> 候选人 候选组
+
+<code>Candidate Users</code>
+
+1. 设置多个 , 分隔
+2. 查询任务 拾取任务 归还/办理任务
+
+```java
+//  zs,lisi,wangwu
+List<Task> taskList = taskService.createTaskQuery()
+                .processDefinitionId(holiday.getId())   // 流程实例id
+                .taskCandidateUser("zs").list();    // 某个 候选用户的任务
+
+// 拾取任务
+taskService.claim(taskId,user);   // 任务 taskAsignee  变为某个user
+
+// 归还任务
+taskService.setAssignee(taskId,null);
+
+// 任务交接
+taskService.setAssignee(taskId,otherUser);
+```
+
+<code>Candidate Groups</code>
+
+## GateWay
+
+1. 排他网关
+
+<code>exclusive gateway</code>
+
+> 多个分支都满足条件时 只能选一个分支执行
+
+2. 并行网关
+
+<code>parallel gateway</code>
+
+> fork/join 并行走多个分支 (分支设置了条件也会都忽略), 最后汇聚到一起, 然后下一步
+
+3. 包含网关
+
+<code>inclusive gateway</code>
+
+> 可以并行走多个分支 (分支条件有效, 不符合不走) , 汇聚点 满足条件的分支都完成后 可以下一步
