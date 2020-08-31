@@ -203,6 +203,72 @@ switchType="1" slaveThreshold="100">
 
 ## ShardingSphere
 
+1. 数据分片
+
+> 配置对照 sharding-jdbc 看 , 官方文档写的和屎一样
+
+> sql 语句兼容性差,一些特殊字段 需要特别注意
+
+```yaml
+schemaName: sharding_db
+
+dataSources:
+  ds0:
+    url: jdbc:mysql://localhost:30002/ds
+    username: root
+    password: root
+    connectionTimeoutMilliseconds: 30000
+    idleTimeoutMilliseconds: 60000
+    maxLifetimeMilliseconds: 1800000
+    maxPoolSize: 65
+  ds1:
+    url: jdbc:mysql://localhost:30008/ds
+    username: root
+    password: root
+    connectionTimeoutMilliseconds: 30000
+    idleTimeoutMilliseconds: 60000
+    maxLifetimeMilliseconds: 1800000
+    maxPoolSize: 65
+
+shardingRule:
+  tables:
+    t_order:
+      actualDataNodes: ds${0..1}.t_order${0..1}
+      databaseStrategy:
+        inline:
+          shardingColumn: user_id
+          algorithmExpression: ds${user_id % 2}
+      tableStrategy:
+        inline:
+          shardingColumn: order_id
+          algorithmExpression: t_order${order_id % 2}
+      keyGenerator: # 可以不配置
+        type: SNOWFLAKE
+        column: order_id
+    t_order_item:
+      actualDataNodes: ds${0..1}.t_order_item${0..1}
+      databaseStrategy:
+        inline:
+          shardingColumn: user_id
+          algorithmExpression: ds${user_id % 2}
+      tableStrategy:
+        inline:
+          shardingColumn: order_id
+          algorithmExpression: t_order_item${order_id % 2}
+      keyGenerator:
+        type: SNOWFLAKE
+        column: order_item_id
+  bindingTables:
+    - t_order,t_order_item
+  defaultDataSourceName: ds0 #  默认数据源 不分片  只能指定一个  没有指定其它规则的表都写到这一个节点
+  broadcastTables: #  广播表    所有节点都会同步写入   查询的时候从一个节点查
+    - user
+  defaultTableStrategy:
+    none:
+```
+
+![示例](./imgs/sproxy.png)
+
 ## 字符集
 
 ```bash
