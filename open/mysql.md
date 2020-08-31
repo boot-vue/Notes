@@ -269,7 +269,11 @@ shardingRule:
 
 ![示例](./imgs/sproxy.png)
 
-## 字符集
+## 配置
+
+> 查看 mysql 文档, 区分 命令行配置 系统变量 配置文件...., 可配置项不完全相同
+
+> 验证配置: mysqld --validate-config
 
 ```bash
 [mysqld]
@@ -284,6 +288,7 @@ symbolic-links=0
 character-set-server=utf8mb4
 collation-server=utf8mb4_general_ci
 max_connections=1000
+default-time-zone='+8:00'
 
 [client]
 default-character-set=utf8mb4
