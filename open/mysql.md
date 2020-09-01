@@ -384,14 +384,15 @@ datadir		= /var/lib/mysql
 #bind-address	= 127.0.0.1
 # Disabling symbolic-links is recommended to prevent assorted security risks
 symbolic-links=0
-character-set-server=utf8mb4
-collation-server=utf8mb4_general_ci
+character_set_serverr=utf8mb4
+collation_server=utf8mb4_0900_ai_ci
 max_connections=1000
 default-time-zone='+8:00'
+slow_query_log=ON
+long_query_time=10  # 默认10s
 
 [client]
 default-character-set=utf8mb4
-default-collation=utf8mb4_general_ci
 
 ```
 
