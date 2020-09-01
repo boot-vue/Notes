@@ -11,6 +11,7 @@
 gdisk /dev/sdn
 
 # ...
+partprobe # 刷新分区表
 
 # 创建PV卷
 
@@ -19,6 +20,9 @@ pvcreate /dev/sdn /dev/sdx
 # 卷组
 
 vgcreate -s 32M xxx /dev/sdn  # -s PE最小块大小  4M整数倍
+
+# 已有vgroup 增加一块  pv
+vgextend xxx  /dev/sdb
 
 # 逻辑卷
 
