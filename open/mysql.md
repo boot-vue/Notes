@@ -6,15 +6,19 @@
 
 配置文件:
 
-```
+```bash
 server_id=1  唯一
 log-bin=mysql-log
+expire_logs_days = 15
 binlog-ignore-db=mysql  忽略同步
 binlog-ignore-db=test
 
 binlog-do-db=xxx  要同步的数据库
 
 binlog_format=STATEMENT  binlog格式
+
+gtid_mod=ON
+enforce_gtid_consistency=ON
 ```
 
 statement :记录写操作
@@ -31,32 +35,127 @@ mixed: 自动选择
 
 配置文件
 
-```
+```bash
 server-id=2
-
-
 relay-log=mysql-relay
-
 log-bin=xxx
-
-master-hoet=1.1.1.1 主节点
-master-user=xxx
-master-password=cccc
-master-port=3306
+binlog-format=ROW
 
 replicate-do-db=xxx  可以不指定
 replicate-do-db=xxx
 
 replicate-ignore-db=xxx
+
+gtid_mod=ON
+enforce_gtid_consistency=ON
+
+mysql> CHANGE MASTER TO MASTER_HOST = '10.*.*.36', MASTER_USER = 'repl', MASTER_PASSWORD = 'replpassword', MASTER_PORT = 3306, MASTER_AUTO_POSITION = 1, MASTER_RETRY_COUNT = 0, MASTER_HEARTBEAT_PERIOD = 10000;
+
+# master  用户密码 时  caching_sha2_password 策略的话  必须设置一个安全连接用户(要配置公钥私钥)
+
+# 或者
+
+CHANGE MASTER TO master_host='192.168.49.80', master_port= 30002, master_auto_position=1;   #需要开启gtid 并且不能与 master_log_file master_log_pos同时使用
+START SLAVE USER='mmss' PASSWORD='test' DEFAULT_AUTH='mysql_native_password';
+
+
+# 数据同步不一致
+
+# 清掉slave  导入数据后  继续开启同步
 ```
 
 > stop slave;
 
-> reset master;
+> reset master; reset slave;
 
 > show slave status;
 
-> stop slave sql_thread; start slave sql_thread;
+```bash
+CHANGE MASTER TO option [, option] ... [ channel_option ]
+
+option: {
+    MASTER_BIND = 'interface_name'
+  | MASTER_HOST = 'host_name'
+  | MASTER_USER = 'user_name'
+  | MASTER_PASSWORD = 'password'
+  | MASTER_PORT = port_num
+  | PRIVILEGE_CHECKS_USER = {'account' | NULL}
+  | REQUIRE_ROW_FORMAT = {0|1}
+  | REQUIRE_TABLE_PRIMARY_KEY_CHECK = {STREAM | ON | OFF}
+  | MASTER_CONNECT_RETRY = interval
+  | MASTER_RETRY_COUNT = count
+  | MASTER_DELAY = interval
+  | MASTER_HEARTBEAT_PERIOD = interval
+  | MASTER_LOG_FILE = 'source_log_name'
+  | MASTER_LOG_POS = source_log_pos
+  | MASTER_AUTO_POSITION = {0|1}
+  | RELAY_LOG_FILE = 'relay_log_name'
+  | RELAY_LOG_POS = relay_log_pos
+  | MASTER_COMPRESSION_ALGORITHMS = 'value'
+  | MASTER_ZSTD_COMPRESSION_LEVEL = level
+  | MASTER_SSL = {0|1}
+  | MASTER_SSL_CA = 'ca_file_name'
+  | MASTER_SSL_CAPATH = 'ca_directory_name'
+  | MASTER_SSL_CERT = 'cert_file_name'
+  | MASTER_SSL_CRL = 'crl_file_name'
+  | MASTER_SSL_CRLPATH = 'crl_directory_name'
+  | MASTER_SSL_KEY = 'key_file_name'
+  | MASTER_SSL_CIPHER = 'cipher_list'
+  | MASTER_SSL_VERIFY_SERVER_CERT = {0|1}
+  | MASTER_TLS_VERSION = 'protocol_list'
+  | MASTER_TLS_CIPHERSUITES = 'ciphersuite_list'
+  | MASTER_PUBLIC_KEY_PATH = 'key_file_name'
+  | GET_MASTER_PUBLIC_KEY = {0|1}
+  | IGNORE_SERVER_IDS = (server_id_list)
+}
+
+channel_option:
+    FOR CHANNEL channel
+
+server_id_list:
+    [server_id [, server_id] ... ]
+```
+
+```bash
+START SLAVE [thread_types] [until_option] [connection_options] [channel_option]
+
+thread_types:
+    [thread_type [, thread_type] ... ]
+
+thread_type:
+    IO_THREAD | SQL_THREAD
+
+until_option:
+    UNTIL {   {SQL_BEFORE_GTIDS | SQL_AFTER_GTIDS} = gtid_set
+          |   MASTER_LOG_FILE = 'log_name', MASTER_LOG_POS = log_pos
+          |   RELAY_LOG_FILE = 'log_name', RELAY_LOG_POS = log_pos
+          |   SQL_AFTER_MTS_GAPS  }
+
+connection_options:
+    [USER='user_name'] [PASSWORD='user_pass'] [DEFAULT_AUTH='plugin_name'] [PLUGIN_DIR='plugin_dir']
+
+
+channel_option:
+    FOR CHANNEL channel
+
+gtid_set:
+    uuid_set [, uuid_set] ...
+    | ''
+
+uuid_set:
+    uuid:interval[:interval]...
+
+uuid:
+    hhhhhhhh-hhhh-hhhh-hhhh-hhhhhhhhhhhh
+
+h:
+    [0-9,A-F]
+
+interval:
+    n[-n]
+
+    (n >= 1)
+```
 
 ## MySQL 分区
 
