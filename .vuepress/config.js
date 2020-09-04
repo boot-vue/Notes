@@ -22,6 +22,21 @@ module.exports = {
       },
     ],
     ["@vuepress/nprogress"],
+    [
+      "social-share",
+      {
+        networks: [
+          "twitter",
+          "facebook",
+          "reddit",
+          "telegram",
+          "qq",
+          "whatsapp",
+        ],
+        email: "bootvue@gmail.com",
+        twitterUser: "boot_vue",
+      },
+    ],
   ],
   themeConfig: {
     serviceWorker: {
