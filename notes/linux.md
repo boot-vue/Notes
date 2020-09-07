@@ -42,7 +42,7 @@ mkfs.ext4 /dev/xxx/xxxx1   # /dev目录下会存在  卷组名/逻辑卷名的�
 lvextend -L +50G /dev/xxx/xxxx1   # 增加50G
 lvreduce -L -50G /dev/xxx/xxxx1   # 减小50G
 
-lvextend -r -l +100FREE /dev/xxx/xxxx1  # 分配vg剩余所有空间  -r 刷新文件系统大小
+lvextend -r -l +100%FREE /dev/xxx/xxxx1  # 分配vg剩余所有空间  -r 刷新文件系统大小
 
 # 更新
 resize2fs /dev/xxx/xxxx1  # etx格式
