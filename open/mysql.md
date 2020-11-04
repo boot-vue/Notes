@@ -17,7 +17,7 @@ binlog-do-db=xxx  要同步的数据库
 
 binlog_format=STATEMENT  binlog格式
 
-gtid_mod=ON
+gtid_mode=ON
 enforce_gtid_consistency=ON
 ```
 
@@ -46,7 +46,7 @@ replicate-do-db=xxx
 
 replicate-ignore-db=xxx
 
-gtid_mod=ON
+gtid_mode=ON
 enforce_gtid_consistency=ON
 
 mysql> CHANGE MASTER TO MASTER_HOST = '10.*.*.36', MASTER_USER = 'repl', MASTER_PASSWORD = 'replpassword', MASTER_PORT = 3306, MASTER_AUTO_POSITION = 1, MASTER_RETRY_COUNT = 0, MASTER_HEARTBEAT_PERIOD = 10000;

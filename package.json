@@ -3,9 +3,9 @@
     "moment": "^2.28.0"
   },
   "devDependencies": {
-    "@vuepress/plugin-google-analytics": "^1.5.4",
-    "@vuepress/plugin-nprogress": "^1.5.4",
-    "vuepress": "^1.5.4",
-    "vuepress-plugin-social-share": "^0.3.2"
+    "@vuepress/plugin-google-analytics": "^1.7.1",
+    "@vuepress/plugin-nprogress": "^1.7.1",
+    "vuepress": "^1.7.1",
+    "vuepress-plugin-social-share": "^1.0.0"
   }
 }
