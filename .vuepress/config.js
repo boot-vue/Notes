@@ -173,5 +173,5 @@ function hadoopSider() {
 }
 
 function sharpSider() {
-  return ["", "netty", "elk", "proxy", "rocket", "zookeeper", "kafka"];
+  return ["", "k8s", "netty", "elk", "proxy", "rocket", "zookeeper", "kafka"];
 }
