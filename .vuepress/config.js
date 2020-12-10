@@ -50,6 +50,7 @@ module.exports = {
         lastUpdated: "上次更新",
         sidebar: {
           "/java/": javaSider("New一个对象"),
+          "/k8s/": k8sSider(),
           "/go/": goSider("好大一只土拨鼠"),
           "/python/": pythonSider("好大一条蛇"),
           "/hadoop/": hadoopSider(),
@@ -66,6 +67,10 @@ module.exports = {
           {
             text: "Java",
             link: "/java/",
+          },
+          {
+            text: "k8s",
+            link: "/k8s/",
           },
           {
             text: "Hadoop",
@@ -168,10 +173,14 @@ function openSider() {
   return ["", "mysql", "redis", "kong"];
 }
 
+function k8sSider() {
+  return ["", "k8s", "kubectl"];
+}
+
 function hadoopSider() {
   return ["", "hadoop", "hdfs", "mapreduce"];
 }
 
 function sharpSider() {
-  return ["", "k8s", "netty", "elk", "proxy", "rocket", "zookeeper", "kafka"];
+  return ["", "netty", "elk", "proxy", "rocket", "zookeeper", "kafka"];
 }
