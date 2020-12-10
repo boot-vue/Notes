@@ -12,7 +12,7 @@
 - 命令行操作（cli）：kubectl 命令。
 
 
-## kubeadm 引导集群
+# kubeadm 引导集群
 
 > image registry: `registry.aliyuncs.com/google_containers`
 
@@ -24,7 +24,7 @@
 | 192.168.100.81 | worker               |
 | 192.168.100.82 | worker               |
 
-### 初始化集群
+## 初始化集群
 
 1. 安装`kubeadm` `kubelet` `kubectl` , `kubelet`设为自启动
 2. `kubeadm` 初始化`control-plane` `etcd`
@@ -129,7 +129,7 @@ sudo kubeadm join 192.168.100.80:6443 --token abcdef.0123456789abcdef \
 kubectl apply -f flannel.yaml  # 镜像需要拉取
 ```
 
-### dashboard
+## dashboard
 
 [dashboard](https://github.com/kubernetes/dashboard/)
 
