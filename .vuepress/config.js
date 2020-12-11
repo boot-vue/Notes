@@ -174,7 +174,19 @@ function openSider() {
 }
 
 function k8sSider() {
-  return ["", "k8s", "kubectl"];
+  return [
+    "",
+    "k8s",
+    "kubectl",
+    "yaml",
+    "pod",
+    "workload",
+    "service",
+    "storage",
+    "scheduler",
+    "safe",
+    "helm"
+  ];
 }
 
 function hadoopSider() {
