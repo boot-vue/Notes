@@ -39,7 +39,7 @@ kubectl create namespace cattle-system
 
 2. 负载均衡器
 
-`7层代理` 外部终止 tls
+`7层代理` tls 在 rancher server/k3s 集群内 ingress 终止
 
 ```nginx
     upstream rancher {
