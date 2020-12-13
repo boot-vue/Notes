@@ -86,15 +86,25 @@ kubectl create namespace cattle-system
 ```bash
 helm repo add rancher-stable https://releases.rancher.com/server-charts/stable
 
-# 使用外部tls
+# k8s secret添加ssl证书
+
+kubectl -n cattle-system create secret tls tls-rancher-ingress \
+  --cert=tls.pem \
+  --key=tls.key
+
+# tls认证
 helm install rancher rancher-stable/rancher \
   --namespace cattle-system \
   --set hostname=demo.com \
   --set ingress.tls.source=secret \
-  --set privateCA=false \
-  --set tls=external \
+  --set privateCA=true \
+  --set tls=ingress \
   --set replicas=2
 
+
+# tls验证
+
+openssl s_client -connect demo.com:443 -servername demo.com # -CAfile ca.crt
 
 # 查看安装
 kubectl -n cattle-system rollout status deploy/rancher
