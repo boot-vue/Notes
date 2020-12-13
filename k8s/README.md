@@ -2,7 +2,9 @@
 
 [YAML 配置](https://k8syaml.com/)
 
-[文档](https://kubernetes.io/zh/)
+[k8s 文档](https://kubernetes.io/zh/)
+
+[rancher 文档](https://docs.rancher.cn/rancher2/)
 
 `docker配置`
 

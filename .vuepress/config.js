@@ -185,7 +185,8 @@ function k8sSider() {
     "storage",
     "scheduler",
     "safe",
-    "helm"
+    "helm",
+    "rancher",
   ];
 }
 

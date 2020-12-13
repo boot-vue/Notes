@@ -43,6 +43,10 @@ volatile-ttl: 只限于设置了 expire 的部分; 优先删除剩余时间(time
 
 ![redis](./imgs/redis.png)
 
+### redis-cluster
+
+> 集群吊炸天
+
 spring boot 配置哨兵:
 
 ```yml
