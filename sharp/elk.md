@@ -139,6 +139,66 @@ filebeat modules enable xxxx
 # 模块配置文件 modeule.d/xxx.yml
 ```
 
+```yaml
+# filebeat.inputs:
+#   - type: container
+#     paths:
+#       - "/var/lib/docker/containers/*/*.log"
+#     enabled: true
+#     tail_files: false
+#     scan_frequency: 6s
+# 开启服务自动发现  label 	co.elastic.logs/enabled=true
+filebeat.autodiscover:
+  providers:
+    - type: docker
+      hints.enabled: true
+      hints.default_config.enabled: false
+
+processors:
+  - add_docker_metadata:
+      host: "unix:///var/run/docker.sock"
+
+output.logstash:
+  hosts: ["192.168.100.80:5044"]
+```
+
 ## Logstash
 
 > input-->filter--->output
+
+```yaml
+- pipeline.id: docker-test
+  queue.type: persisted
+  path.config: "/home/battery/logstash/config/logstash.conf"
+```
+
+```bash
+input {
+  beats {
+    port => 5044
+  }
+}
+
+filter{
+  # .....
+}
+
+output {
+  file{
+      path => "/home/battery/%{+YYYY-MM-dd}.log"
+  }
+
+  if [container][name]=='mysql'{
+    file{
+      path => "/home/battery/mysql-%{+YYYY-MM-dd}.log"
+      codec => line { format => "%{message}"}
+    }
+  }else if [container][name]=='redis'{
+    file{
+      path => "/home/battery/redis-%{+YYYY-MM-dd}.log"
+      codec => line { format => "%{message}"}
+    }
+  }
+}
+
+```
