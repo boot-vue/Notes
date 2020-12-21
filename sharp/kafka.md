@@ -7,7 +7,7 @@
 
 ## Topic
 
-分区 数据存储, topic 下包含 leader 与 follower, 一个 topic 实际就是一个文件目录
+分区 数据存储, topic 下包含 `leader` 与 `follower`, 一个 topic 实际就是一个文件目录
 
 ## Consumer
 
@@ -35,7 +35,9 @@ zookeeper.connect=xxxx:2181,xxxx:2181
 ## 数据可靠性
 
 > 生产者发送消息, 全部分区都要同步成功 返回成功 ACK, 生产者继续发
+
 > leader--->follower 同步节点慢的或者挂了的剔出同步
+
 > 某些不重要的数据, 不需要完全同步成功
 
 ### 一致性
