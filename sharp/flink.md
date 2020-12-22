@@ -172,18 +172,176 @@ source-->transformation-->sink
 
   `addSink`: 计算结果输出
 
+## window
+
+无限流数据切割为有限流, 分发到有限大小`bucket`中
+
+`time window`: 滚动`tumbling` 滑动`sliding` 会话`session`:timeout 时间间隙,没有新数据开始新窗口
+
+`count window`: 滚动 滑动
+
+`window size` `slide size` 滑动窗口数据会重叠
+
+使用: `keyBy`-->`timewindow()`-->`聚合` 窗口结束后`state`结果输出
+
+`增量聚合`
+
+`全窗口函数`:`bucket`收集数据,计算的时候再遍历数据 `apply(WindowFunction)`
+
+`triger`: 触发器, 触发 window 关闭 触发结果计算输出
+
+`evitor`: 移除某些数据 `allowedLateness`: 允许延迟时间(窗口延迟关闭)
+
+`sideOutPutLateData`: 迟到数据扔到 side out 另一个数据流
+
+## 时间语义
+
+- event time : 事件创建时间
+- ingestion time: 数据进入 flink 的时间
+- process time: 处理数据的时间 (默认)
+
+  `env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime)` : 同时指定数据哪个字段代表 `event time`
+
+## watermark
+
+短时间大量乱序数据, 延迟窗口关闭时间
+
+`watermark`是一条特殊的数据记录`StreamElement`
+
+必须单调递增, 与数据的时间戳相关
+
+上游任务向下广播`watermark`时间, 下游任务按最小时间戳推进事件时间
+
+```java
+// 提取时间戳   生成watermark
+dataStream.assignTimestampsAndWatermarks(new BoundedOutOfOrdernessTimestampExtractor<>(watermark延时时间))
+```
+
+## 状态管理
+
+state 不能跨任务读取
+
+- operator state
+
+  `mapFunction` 局部变量
+
+  `implements ListCheckPoint<>` : `snapsotState` `restoreState` 存储/恢复 state 状态
+
+- keyed state
+
+  `richMapFunction`
+
+  声明状态: open 方法内`getRuntimeContent().getState(new ValueStateDescriptor<>("",xxx.class))`
+
+  读取 state: `xxState.value()` 更新 state: `xxState.update(v)`
+
+  其它 state: `listState` `mapState` `reducingState`等聚合 state
+
+- state backends
+
+  本地状态管理 state 存储
+
+  `memory` `fs` `rocksDB`
+
+## process api
+
+`processFunction` `keyedProcessFuction` `coProcessFunction` `processJoinFunction` `broadcastProcessFunction` `processWindowFunction` `keyedBroadcastProcessFunction` `processAllWindowFunction`
+
+`process`注册定时器
+
+## 容错
+
+    `checkpoints` `savepoints`
+
+## table api(sql)
+
+    `StreamTableEnvironment.create(env,settings)`
+
+```java
+Table t=tableEnv.fromDataStream(xxx);
+t.select("id,name").where("id=10");
+
+// sql
+tableEnv.createTemporaryView("xxxx");
+
+Table ts=tableEnv.sqlQuery("select id from xxx where ....");
+
+tableEnv.toAppendStream(ts,Row.class);
+
+// -------------------
+tableEnv.connect(...).createTemporaryTable("xxx");
+
+
+rs.insertInto("xxxTable");
+```
+
+`Table`-->`Catalog`-->`database`-->`object`
+
+- 创建表
+
+```java
+tableEnv.connect(....)
+        .withFormat(....) // 数据格式化/解析
+        .wifhSchema(....) //表结构
+        .field("id",DataTypes.STRING()).field(...)
+        .createTemporaryTable("xxx") // 临时表 输入/输出
+```
+
+- 查询
+
+```java
+// 聚合
+t.groupBy("id").select("id, id.count as count, age.avg as avg");
+tableEnv.sqlQuery("select id,count(id) from xxx group by id");
+```
+
+- 输出
+
+  外部输出时模式`UpdateMode`:`append` `retract` `upsert`
+
+```java
+rs.insertInto("xxxx");
+
+// 聚合类数据需要更新模式 elasticsearch mysql redis支持
+```
+
+- table 转 dataStream: 只能`append` `retract`
+
+- 时间
+
+  处理时间: 增加字段`.proctime`
+
+  事件时间: 原有字段`.rowtime`
+
 - window
 
-  无限流数据切割为有限流, 分发到有限大小`bucket`中
+```java
+t.window(xxWindow as "w")  // window别名
+    .groupBy("w, id") // 分组要指定window
+    .select("id,id.count");
 
-  `time window`: 滚动`tumbling` 滑动`sliding` 会话`session`:timeout 时间间隙,没有新数据开始新窗口
 
-  `count window`: 滚动 滑动
+.window(Tumble.over("10.minutes").every("5.minutes").on("rowtime").as("w"));
 
-  `window size` `slide size` 滑动窗口数据会重叠
+// 滚动窗口 tumble
+// 滑动窗口 hop
+// session窗口 session
 
-  使用: `keyBy`-->`timewindow()`-->`聚合` 窗口结束后`state`结果输出
+// -----------over window
+t.window(xxOverWindow as "w")
+    .select("id,id.count over w");
 
-  `增量聚合`
+.window(Over.partitionBy("id").orderBy("proctime").preceding(UNBOUNDED_RANGE/ROW).as("w")) // 无界over window
+.window(Over.partitionBy("id").orderBy("proctime").preceding("1.minutes"/"10.rows").as("w")) // 有无界over window
+```
 
-  `全窗口函数`:`bucket`收集数据,计算的时候再遍历数据 `apply(WindowFunction)`
+- function 函数
+
+  `内置函数`
+
+  `自定义函数`: env 先注册 function
+
+        1. `标量函数scalarFunction` 必须有`public xxx eval()`方法 只输出单个值
+        2. `表函数TableFunction` 必须有`public void eval()`方法 可以输出多行
+        3. `聚合函数aggregateFunction` 多条输入 分组聚合后输出一个结果 `createAcumulator()` `accumulate()` `getValue()`
+        4. `表聚合函数tableAggregateFunction` 聚合输出多行多列结果 `createAcumulator()` `accumulate()` `emitValue()`
