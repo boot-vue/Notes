@@ -345,3 +345,39 @@ t.window(xxOverWindow as "w")
         2. `表函数TableFunction` 必须有`public void eval()`方法 可以输出多行
         3. `聚合函数aggregateFunction` 多条输入 分组聚合后输出一个结果 `createAcumulator()` `accumulate()` `getValue()`
         4. `表聚合函数tableAggregateFunction` 聚合输出多行多列结果 `createAcumulator()` `accumulate()` `emitValue()`
+
+## cep
+
+`复杂事件处理`: 输入-->处理(规则匹配)-->输出符合规则的事件
+
+`Pattern`
+
+```java
+Pattern.<T>begin("").where().next("").subtype().followedBy().end();
+```
+
+- 个体模式
+
+`start.times(2,4).optional`: optional 可选 0 次
+`.greedy`尽可能多的重复匹配 `.onemore`一次或多次
+`start.timesOrMore(2).optional.greedy`: 0 次 2 次或多次, 尽可能多的匹配
+`.consecutive` times严格相邻
+
+条件: `where` `or` `until`
+
+- 模式序列
+
+  必须以`begin`开始
+
+  `notNext`: 某个事件不要近邻前一个事件
+
+  `notFollowedBy`: 某个事件不要在两个事件间发生
+
+  可以指定时间范围 `next.withIn(3s)`
+
+```java
+PatternStream ss=CEP.pattern(dataStream,pattern);
+
+// 匹配事件
+select()/flatSelect()
+```
