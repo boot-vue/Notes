@@ -180,3 +180,95 @@ ubuntu 下 declare 报错:
 sudo dpkg-reconfigure dash
 # 选否  ubuntu默认sh 指向了dash  通过上边命令  解除dash与sh的关联
 ```
+
+## ansible
+
+`ansible all -m ping -v`
+
+默认模块`command` 有些命令无法执行
+
+执行 shell `ansible xxx -m shell -a 'ls /'`
+
+执行 shell 脚本 `ansible xxx -m script -a ./xx.sh`
+
+`copy`:支持目录
+
+`fetch`:只能单文件
+
+`file`: 操作文件 `ansible xxx -m file -a 'path=/data/xx.log state=touch group=xx owner=xx mode=777'`
+
+`unarchive`: copy=yes/no
+
+`archive` `hostname` `cron` `user` `setup`
+
+### playbook
+
+`ansible-playbook xxx.yaml [--check --list-hosts --list-tags --list-tasks --limit -v]`
+
+- hosts
+
+  执行任务的主机
+
+- tasks
+
+  任务
+
+- variables
+
+  变量
+
+  定义变量:
+
+        * `命令行参数 -e xxx=ooo`
+
+        * 直接使用`setup`的系统信息 `gather_facts`要打开
+
+        * 单独文件定义
+
+        `inventory`主机清单中指定变量
+
+        ```conf
+        [xxx] # 单个指定
+        192.168.100.1 xx=ooo
+        192.168.100.2 xx=oop
+
+        [xxx:vars] # 指定一组
+        mm=kk
+
+        ```
+
+        * set_fact模块定义
+
+            ```yaml
+            set_fact:
+                php_redis_package: "{{ __php_redis_package }}"
+            ```
+
+- templates
+
+  模板, templates 目录下定义
+
+  `xxx.j2` 文件定义变量, task 执行时自动替换
+
+- tags
+
+  标签
+
+  ```yaml
+  - hosts: xxx:yyyy
+    remote_user: root
+    gather_facts: no # 是否收集主机信息
+    vars:
+        - xx: oo
+
+    tasks:
+      - name: kkk
+        tags: pppp  # 执行的时候指定tag执行 -t pppp
+        remote_user: ooo
+        module: args
+        notify: handlersName # 触发handlers执行
+
+    handlers:
+      - name: {{ variables_name }  # 变量
+        module: args
+  ```
