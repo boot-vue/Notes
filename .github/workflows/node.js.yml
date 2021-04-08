@@ -15,4 +15,4 @@ jobs:
       with:
         node-version: '14'
         check-latest: true
-    - run: npm install && vuepress build docs
+    - run: npm install && npx vuepress build .
