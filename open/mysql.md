@@ -390,6 +390,8 @@ max_connections=1000
 default-time-zone='+8:00'
 slow_query_log=ON
 long_query_time=10  # 默认10s
+max_allowed_packet=256M
+innodb_log_file_size=2GB
 
 [client]
 default-character-set=utf8mb4
