@@ -16,3 +16,9 @@ jobs:
         node-version: '14'
         check-latest: true
     - run: npm install && npx vuepress build .
+    - name: Publish Docs
+      run: |
+        cd docs
+        git add .
+        git commit -am "github actions generate docs on : $(date +"%Y-%m-%d %T")"
+        git push orign doc
