@@ -20,6 +20,8 @@ jobs:
     - run: npm install && npx vuepress build .
     - name: Publish Docs
       run: |
+        git config --global user.email "bootvue@gmail.com"
+        git config --global user.name "github actions"
         git add .
         git commit -am "github actions generate docs on : $(date +"%Y-%m-%d %T")"
         git push
