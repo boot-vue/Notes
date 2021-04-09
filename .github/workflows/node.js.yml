@@ -2,6 +2,8 @@ name: Publish Docs
 
 on:
   push:
+    paths-ignore:
+      - "docs/**"
     branches: [ master ]
 
 jobs:
@@ -18,7 +20,6 @@ jobs:
     - run: npm install && npx vuepress build .
     - name: Publish Docs
       run: |
-        cd docs
         git add .
         git commit -am "github actions generate docs on : $(date +"%Y-%m-%d %T")"
-        git push orign doc
+        git push
