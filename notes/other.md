@@ -319,3 +319,25 @@ uploadArchives {
     }
 }
 ```
+
+## jira配置
+
+`setenv.sh`
+
+```bash
+JVM_SUPPORT_RECOMMENDED_ARGS:="-Duser.timezone=Asia/Shanghai"
+
+export CATALINA_OPTS="-javaagent:/var/atlassian/application-data/jira/agent.jar ${CATALINA_OPTS}"
+```
+
+`confluence setenv.sh`
+
+```bash
+export CATALINA_OPTS="-javaagent:/var/atlassian/application-data/confluence/agent.jar ${CATALINA_OPTS}"
+```
+
+`bitbucket _start-webapp.sh`
+
+```bash
+JAVA_OPTS="-javaagent:/var/atlassian/application-data/bitbucket/agent.jar -classpath $INST_DIR/app $JAVA_OPTS $BITBUCKET_ARGS $JMX_OPTS $JVM_REQUIRED_ARGS $JVM_SUPPORT_RECOMMENDED_ARGS"
+```
