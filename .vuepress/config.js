@@ -1,7 +1,7 @@
 const secret = require("./secret");
 
 module.exports = {
-  base: "/Notes/",
+  base: "/__Notes/",
   title: "啪啪啪的指针",
   dest: "docs",
   plugins: [
